@@ -76,7 +76,6 @@ export default class InputToolbar extends React.Component {
 
   renderMenu() {
     return (
-      <View style={{ backgroundColor: "#FFFFFF", marginBottom: 3}}>
         <BubbleMenu
             items={this.props.messagePriorities}
             isOpened={true}
@@ -94,9 +93,8 @@ export default class InputToolbar extends React.Component {
               });
             }}
             color={'clear'}
-            style={styles.floatButtonStyle}s
+            style={styles.floatButtonStyle}
           />
-      </View>
     )
   }
 
@@ -126,7 +124,7 @@ export default class InputToolbar extends React.Component {
 
   render() {
     return (
-      <View style={[styles.container, this.props.containerStyle, { position: this.state.position }, { backgroundColor:"transparent" }]}>
+      <View style={[styles.container, this.props.containerStyle, { position: this.state.position }, { backgroundColor: "transparent" }]}>
         <View style={[styles.primary, this.props.primaryStyle]}>
           {this.renderActions()}
           {this.renderComposer()}
@@ -141,8 +139,6 @@ export default class InputToolbar extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: Color.defaultColor,
     backgroundColor: Color.white,
     bottom: 0,
     left: 0,
@@ -155,6 +151,9 @@ const styles = StyleSheet.create({
   accessory: {
     height: 44,
   },
+  floatButtonStyle: {
+    backgroundColor: "#FFFFFF"
+  }
 });
 
 InputToolbar.defaultProps = {

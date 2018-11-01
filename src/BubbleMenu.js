@@ -25,7 +25,6 @@ class BubbleMenu extends Component {
 
   componentDidMount() {
     if (this.props.isOpened) {
-      // setTimeout(() => {this._toggleVisibility(true)}, 1000)
       this._toggleVisibility(true);
     }
   }
@@ -36,7 +35,7 @@ class BubbleMenu extends Component {
       <Animated.View style={[styles.container, {
         height: this.state.openMenu,
         backgroundColor: this.state.show ? (color) ? color : "#ffffff" : (color) ? color : "#fafafa"
-      },style]}>
+      }, style]}>
 
         <Animated.View style={[styles.items, {
           opacity: this.state.opacity
@@ -125,14 +124,15 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 50/2,
+    borderTopLeftRadius: 50/2,
+    borderTopRightRadius: 50/2,
     justifyContent: 'space-between',
     marginBottom: 3
   },
   button: {
     width: 50,
-    height: 50,
-    borderRadius: 50 / 2,
+    height: 41,
+    borderRadius: 50/2,
     justifyContent: "center",
     alignItems: "center",
     bottom: 0,
