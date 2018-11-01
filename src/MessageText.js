@@ -1,7 +1,7 @@
 /* eslint no-use-before-define: ["error", { "variables": false }] */
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Linking, StyleSheet, Text, View, ViewPropTypes } from 'react-native';
+import { Linking, StyleSheet, Text, View, ViewPropTypes, Image } from 'react-native';
 
 import ParsedText from 'react-native-parsed-text';
 import Communications from 'react-native-communications';
@@ -66,27 +66,85 @@ export default class MessageText extends React.Component {
   }
 
   render() {
-    const linkStyle = StyleSheet.flatten([styles[this.props.position].link, this.props.linkStyle[this.props.position]]);
     return (
       <View style={[styles[this.props.position].container, this.props.containerStyle[this.props.position]]}>
-        <ParsedText
-          style={[
-            styles[this.props.position].text,
-            this.props.textStyle[this.props.position],
-            this.props.customTextStyle,
-          ]}
-          parse={[
-            ...this.props.parsePatterns(linkStyle),
-            { type: 'url', style: linkStyle, onPress: this.onUrlPress },
-            { type: 'phone', style: linkStyle, onPress: this.onPhonePress },
-            { type: 'email', style: linkStyle, onPress: this.onEmailPress },
-          ]}
-          childrenProps={{ ...this.props.textProps }}
-        >
-          {this.props.currentMessage.text}
-        </ParsedText>
+          {this.renderMessageContent()}
       </View>
     );
+  }
+  
+  renderMessageContent() {
+    const linkStyle = StyleSheet.flatten([styles[this.props.position].link, this.props.linkStyle[this.props.position]]);
+    var priorityImg = this.getMessagePriorityImage();
+    if (this.props.position == "right") {
+      return (
+        <View style={{flexDirection:"row"}}>
+          <Image
+            style={{width:15,height:15, alignSelf: "center", marginLeft: 5}}
+            source={priorityImg}
+          />        
+          <ParsedText
+            style={[
+              styles[this.props.position].text,
+              this.props.textStyle[this.props.position],
+              this.props.customTextStyle,
+            ]}
+            parse={[
+              ...this.props.parsePatterns(linkStyle),
+              { type: 'url', style: linkStyle, onPress: this.onUrlPress },
+              { type: 'phone', style: linkStyle, onPress: this.onPhonePress },
+              { type: 'email', style: linkStyle, onPress: this.onEmailPress },
+            ]}
+            childrenProps={{ ...this.props.textProps }}
+          >
+            {this.props.currentMessage.text}
+          </ParsedText>
+        </View>
+      )
+    } else {
+      return (
+        <View style={{flexDirection:"row"}}>      
+          <ParsedText
+            style={[
+              styles[this.props.position].text,
+              this.props.textStyle[this.props.position],
+              this.props.customTextStyle,
+            ]}
+            parse={[
+              ...this.props.parsePatterns(linkStyle),
+              { type: 'url', style: linkStyle, onPress: this.onUrlPress },
+              { type: 'phone', style: linkStyle, onPress: this.onPhonePress },
+              { type: 'email', style: linkStyle, onPress: this.onEmailPress },
+            ]}
+            childrenProps={{ ...this.props.textProps }}
+          >
+            {this.props.currentMessage.text}
+          </ParsedText>
+          <Image
+            style={{width:15,height:15, alignSelf: "center", marginRight: 5}}
+            source={priorityImg}
+          />  
+        </View>
+      )
+    }
+  }
+
+  getMessagePriorityImage = () => {
+    if (this.props.currentMessage.message_priority && this.props.currentMessage.message_priority != "") {
+      var message_priority = this.props.currentMessage.message_priority
+      if (message_priority == "normal") {
+        return null;
+      } else if (message_priority == "fyi") {
+        return require("./images/fyi.png");
+      } else if (message_priority == "danger") {
+        return require("./images/danger.png");
+      } else {
+        return null;
+      }
+    }
+    else {
+      return null;
+    }
   }
 
 }
