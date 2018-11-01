@@ -8,6 +8,7 @@ import Composer from './Composer';
 import Send from './Send';
 import Actions from './Actions';
 import Color from './Color';
+import BubbleMenu from './BubbleMenu';
 
 export default class InputToolbar extends React.Component {
 
@@ -19,6 +20,7 @@ export default class InputToolbar extends React.Component {
 
     this.state = {
       position: 'absolute',
+      showMenu: false
     };
   }
 
@@ -58,10 +60,51 @@ export default class InputToolbar extends React.Component {
   }
 
   renderSend() {
-    if (this.props.renderSend) {
-      return this.props.renderSend(this.props);
+    var newProps = {
+      ...this.props,
+      longPressSendAction: this.longPress
     }
-    return <Send {...this.props} />;
+    if (this.props.renderSend) {
+      return this.props.renderSend(newProps);
+    }
+    if (this.state.showMenu) {
+      return this.renderMenu();
+    } else {
+      return <Send {...newProps} />;
+    }
+  }
+
+  renderMenu() {
+    return (
+      <View style={{ backgroundColor: "#FFFFFF", marginBottom: 3}}>
+        <BubbleMenu
+            items={this.props.messagePriorities}
+            isOpened={true}
+            onMenuPress={(status)=> {
+              this.setState({
+                showMenu: status
+              })
+            }}
+            onMenuItemPress = {(item, index)=> {
+              console.log("Item Pressed :", item + " ?? " + index)
+              this.props.onSend({ text: this.messageTxt.trim(), message_priority: item }, true);
+              this.messageTxt = "";
+              this.setState({
+                showMenu: false
+              });
+            }}
+            color={'clear'}
+            style={styles.floatButtonStyle}s
+          />
+      </View>
+    )
+  }
+
+  longPress = (value) => {
+    this.messageTxt = value.text;
+    this.setState({
+      showMenu: true
+    })
   }
 
   renderComposer() {
@@ -83,7 +126,7 @@ export default class InputToolbar extends React.Component {
 
   render() {
     return (
-      <View style={[styles.container, this.props.containerStyle, { position: this.state.position }]}>
+      <View style={[styles.container, this.props.containerStyle, { position: this.state.position }, { backgroundColor:"transparent" }]}>
         <View style={[styles.primary, this.props.primaryStyle]}>
           {this.renderActions()}
           {this.renderComposer()}

@@ -41,7 +41,7 @@ export default class Composer extends React.Component {
         onChange={(e) => this.onContentSizeChange(e)}
         onContentSizeChange={(e) => this.onContentSizeChange(e)}
         onChangeText={(text) => this.onChangeText(text)}
-        style={[styles.textInput, this.props.textInputStyle, { height: this.props.composerHeight }]}
+        style={[styles.textInput, this.props.textInputStyle, { height: this.props.composerHeight, backgroundColor: "#FFFFFF" }]}
         autoFocus={this.props.textInputAutoFocus}
         value={this.props.text}
         enablesReturnKeyAutomatically
@@ -57,7 +57,7 @@ export default class Composer extends React.Component {
 const styles = StyleSheet.create({
   textInput: {
     flex: 1,
-    marginLeft: 10,
+    paddingLeft: 10,
     fontSize: 16,
     lineHeight: 16,
     marginTop: Platform.select({
